@@ -1,0 +1,10 @@
+version: '2'
+
+services:
+  spid-idp-validator-local:
+    container_name: spid-idp-validator-local
+    build: .
+    ports:
+      - "8080:8080"
+      - "8443:8443"
+

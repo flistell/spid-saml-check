@@ -215,7 +215,7 @@ var sendLogoutResponse = function(req, res) {
         defaults = Utility.defaultParam(defaults, "IssueInstant", Utility.getInstant());
         defaults = Utility.defaultParam(defaults, "Destination", singleLogoutServiceURL[0]);
         defaults = Utility.defaultParam(defaults, "AuthnRequestID", authnRequestID);
-        defaults = Utility.defaultParam(defaults, "NameQualifier", "https://validator.spid.gov.it");
+        defaults = Utility.defaultParam(defaults, "NameQualifier", "https://oig-spid-dev.univr.it:8443/");
         defaults = Utility.defaultParam(defaults, "Issuer", config_idp.entityID);
         
         let testSuite = new TestSuite(config_idp, config_test);
@@ -271,11 +271,17 @@ require('./api/metadata-sp')	(app, checkAuth, getEntityDir, database);
 require('./api/request')    	(app, checkAuth, getEntityDir, database);
 require('./api/response')    	(app, checkAuth);
 
+var https = require('https');
+var privateKey  = fs.readFileSync('sslcert/server.key', 'utf8');
+var certificate = fs.readFileSync('sslcert/server.crt', 'utf8');
 
-
+var credentials = {key: privateKey, cert: certificate};
+var httpsServer = https.createServer(credentials, app);
 
 // start
 app.listen(8080, () => {
     // eslint-disable-next-line no-console
     console.log("\nSPID Validator\nversion: 4.0\n\nlistening on port 8080");
 });
+httpsServer.listen(8443);
+

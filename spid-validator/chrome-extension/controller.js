@@ -1,4 +1,4 @@
-var host = "https://validator.spid.gov.it/samlsso";
+var host = "https://oig-spid-dev.univr.it:8443/samlsso";
 var SAMLRequest = "";
 var RelayState = "";
 var action = host;
